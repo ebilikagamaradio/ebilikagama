@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBilikAgama - SMJK Chung Hwa Tenom</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN for single file integration) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Config for Custom Colors/Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#059669', // Emerald 600 (Hijau Islamik)
+                        secondary: '#0f766e', // Teal 700 (Biru/Hijau Gelap)
+                        accent: '#10b981', // Emerald 500
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Smooth Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #059669;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0f766e;
+        }
+
+        /* Glassmorphism for radio player */
+        .glass-player {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50 flex flex-col min-h-screen">
+
+    <!-- 1. HEADER -->
+    <header class="bg-gradient-to-r from-secondary to-primary text-white py-4 shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4">
+                <!-- Logo -->
+                <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center overflow-hidden shadow-inner shrink-0 border-2 border-white/30">
+                    <img src="LOGO_SMJKCH-removebg-preview.jpg" alt="Logo SMJK Chung Hwa Tenom" class="w-full h-full object-contain">
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide uppercase">SELAMAT DATANG KE eBilikAgama</h1>
+                    <p class="text-sm md:text-base text-emerald-100 font-medium">HOMEPAGE SMJK CHUNG HWA TENOM</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. NAVIGATION BAR (Sticky) -->
+    <nav class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center w-full justify-center">
+                    <a href="#" class="text-primary font-semibold hover:text-secondary transition px-3 py-2 border-b-2 border-primary">Home</a>
+                    <a href="https://ebilikagamaradio.github.io/ebilikagamaradio/" target="_blank" class="text-gray-600 font-medium hover:text-primary transition px-3 py-2">Radio eBilikAgama</a>
+                    <a href="#info-section" class="text-gray-600 font-medium hover:text-primary transition px-3 py-2">Info Bilik Agama</a>
+                    <a href="#info-section" class="text-gray-600 font-medium hover:text-primary transition px-3 py-2">Jadual / Aktiviti</a>
+                </div>
+
+                <!-- Admin Login Button (Desktop) -->
+                <div class="hidden md:flex shrink-0 absolute right-8">
+                    <button onclick="openAdminModal()" class="bg-gray-100 text-gray-700 hover:bg-primary hover:text-white px-4 py-2 rounded-lg font-medium transition text-sm flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-lock"></i> Login Admin
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 pt-2 pb-4 space-y-1 shadow-inner">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-primary bg-emerald-50">Home</a>
+                <a href="https://ebilikagamaradio.github.io/ebilikagamaradio/" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Radio eBilikAgama</a>
+                <a href="#info-section" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Info Bilik Agama</a>
+                <a href="#info-section" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Jadual / Aktiviti</a>
+                <button onclick="openAdminModal()" class="w-full text-left mt-4 block px-3 py-2 rounded-md text-base font-medium text-white bg-secondary hover:bg-primary">
+                    <i class="fa-solid fa-lock mr-2"></i> Login Admin
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 3. HERO SECTION -->
+    <section class="relative bg-gray-900 min-h-[60vh] flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0">
+            <!-- Replace placeholder with actual school/mosque image -->
+            <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=2070&auto=format&fit=crop" alt="Background" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-secondary/80 backdrop-blur-sm"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-in-up">
+            <span class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-100 border border-emerald-400/30 text-sm font-semibold mb-4 backdrop-blur-md">
+                <i class="fa-solid fa-broadcast-tower mr-1"></i> Siaran Langsung & Informasi
+            </span>
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                Platform Digital Rasmi eBilikAgama
+            </h2>
+            <p class="text-lg md:text-xl text-emerald-50 mb-10 max-w-2xl mx-auto opacity-90">
+                Pusat sehenti untuk siaran radio ilmiah, maklumat terkini, dan aktiviti kerohanian pelajar SMJK Chung Hwa Tenom.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://ebilikagamaradio.github.io/ebilikagamaradio/" target="_blank" class="bg-accent hover:bg-emerald-400 text-white px-8 py-3 rounded-full font-semibold shadow-lg shadow-emerald-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-headphones"></i> Dengar Radio Sekarang
+                </a>
+                <button onclick="openAdminModal()" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-3 rounded-full font-semibold backdrop-blur-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> Login Admin
+                </button>
+            </div>
+        </div>
+        
+        <!-- Wave Divider Bottom -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10">
+            <svg class="relative block w-full h-[50px] md:h-[100px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,123.15,189.22,107.85,246.36,92.83,293.3,71.2,321.39,56.44Z" fill="#f9fafb"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- 4. RADIO SECTION (INTEGRATION) -->
+    <section id="radio-section" class="py-16 md:py-24 relative">
+        <div class="container mx-auto px-4 max-w-4xl fade-in-up">
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold text-gray-800 mb-3">eBilikAgama Radio</h3>
+                <p class="text-gray-500">Dengarkan siaran langsung tazkirah, nasyid, dan pengumuman.</p>
+            </div>
+
+            <!-- Radio Player Card -->
+            <div class="glass-player rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden">
+                <!-- Decorative background blur -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-accent/20 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <!-- Icon/Cover -->
+                    <div class="w-32 h-32 md:w-48 md:h-48 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shrink-0 relative">
+                        <i class="fa-solid fa-microphone-lines text-5xl md:text-7xl text-white opacity-80"></i>
+                        
+                        <!-- Pulse effect when Live -->
+                        <div id="live-pulse" class="absolute inset-0 rounded-2xl border-4 border-accent opacity-0 animate-ping hidden"></div>
+                    </div>
+
+                    <!-- Player Controls & Info -->
+                    <div class="flex-1 w-full text-center md:text-left">
+                        <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                            <span id="radio-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-200 text-gray-600 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-gray-400"></span> OFFLINE
+                            </span>
+                            <span id="radio-loading" class="text-sm text-primary hidden">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i> Memuatkan...
+                            </span>
+                        </div>
+                        
+                        <h4 id="radio-title" class="text-2xl font-bold text-gray-800 mb-1">Siaran Dihentikan</h4>
+                        <p id="radio-subtitle" class="text-gray-500 text-sm mb-6">Sila kembali semula mengikut jadual siaran.</p>
+
+                        <!-- Dynamic Player Container -->
+                        <div id="player-container" class="w-full bg-gray-100 rounded-xl p-4 shadow-inner min-h-[60px] flex items-center justify-center">
+                            <p class="text-gray-400 text-sm italic">Tiada siaran tersedia pada waktu ini.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center text-sm text-gray-400">
+                <i class="fa-solid fa-info-circle"></i> Player akan dikemaskini secara automatik jika admin mengubah tetapan.
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. INFO SECTION -->
+    <section id="info-section" class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="text-center mb-16 fade-in-up">
+                <h3 class="text-3xl font-bold text-gray-800 mb-3">Pusat Maklumat</h3>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-300 fade-in-up group">
+                    <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center text-primary text-2xl mb-6 group-hover:bg-primary group-hover:text-white transition">
+                        <i class="fa-solid fa-book-open-reader"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Info Bilik Agama</h4>
+                    <p class="text-gray-600 mb-6 line-clamp-3">Maklumat berkaitan peraturan, fasiliti, dan panduan penggunaan Bilik Agama SMJK Chung Hwa Tenom untuk rujukan semua pelajar dan guru.</p>
+                    <a href="#" class="text-primary font-semibold hover:text-secondary inline-flex items-center gap-2 group-hover:translate-x-1 transition">
+                        Lihat Lagi <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-300 fade-in-up delay-100 group">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-2xl mb-6 group-hover:bg-blue-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-mosque"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Aktiviti & Program</h4>
+                    <p class="text-gray-600 mb-6 line-clamp-3">Galeri gambar dan laporan aktiviti kerohanian yang telah dan akan dijalankan seperti sambutan Maulidur Rasul, solat hajat, dan kem bina insan.</p>
+                    <a href="#" class="text-blue-600 font-semibold hover:text-blue-800 inline-flex items-center gap-2 group-hover:translate-x-1 transition">
+                        Lihat Lagi <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-300 fade-in-up delay-200 group">
+                    <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 text-2xl mb-6 group-hover:bg-orange-600 group-hover:text-white transition">
+                        <i class="fa-regular fa-calendar-days"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Jadual Penggunaan</h4>
+                    <p class="text-gray-600 mb-6 line-clamp-3">Semak jadual terkini penggunaan bilik agama mengikut kelas, persatuan, dan aktiviti harian bagi mengelakkan pertindihan tempahan.</p>
+                    <a href="#" class="text-orange-600 font-semibold hover:text-orange-800 inline-flex items-center gap-2 group-hover:translate-x-1 transition">
+                        Lihat Lagi <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. FOOTER -->
+    <footer class="bg-gray-900 text-gray-300 py-12 border-t border-gray-800 mt-auto">
+        <div class="container mx-auto px-4 max-w-6xl text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                    <img src="LOGO_SMJKCH-removebg-preview.jpg" alt="Logo SMJK Chung Hwa Tenom" class="w-12 h-12 object-contain">
+                    <h5 class="text-xl font-bold text-white uppercase tracking-wider">SMJK Chung Hwa Tenom</h5>
+                </div>
+                <p class="text-sm text-gray-500 max-w-sm">
+                    Melahirkan modal insan yang seimbang dari segi akademik dan kerohanian.
+                </p>
+            </div>
+            
+            <div class="text-center md:text-right">
+                <div class="flex gap-4 justify-center md:justify-end mb-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition hover:-translate-y-1">
+                        <i class="fa-brands fa-facebook-f text-white"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition hover:-translate-y-1">
+                        <i class="fa-brands fa-youtube text-white"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition hover:-translate-y-1">
+                        <i class="fa-brands fa-instagram text-white"></i>
+                    </a>
+                </div>
+                <p class="text-sm">&copy; <span id="current-year"></span> Hak Cipta Terpelihara.</p>
+                <p class="text-xs text-emerald-500 mt-1 font-medium">Dibangunkan untuk eBilikAgama</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- 6. ADMIN SIMULATION MODAL (FOR PROTOTYPING) -->
+    <!-- ========================================== -->
+    <div id="admin-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl w-full max-w-md p-6 transform scale-95 transition-transform duration-300" id="admin-modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800"><i class="fa-solid fa-sliders text-primary mr-2"></i> Simulasi Admin Radio</h3>
+                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+            
+            <p class="text-sm text-gray-500 mb-6">Ini adalah simulasi Backend Panel. Apabila admin mengubah data di sini, Homepage akan **auto-update** pemain radio.</p>
+
+            <form id="admin-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Status Siaran</label>
+                    <select id="sim-status" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none">
+                        <option value="offline">Offline</option>
+                        <option value="live">Live (Sedang Bersiaran)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Stream</label>
+                    <select id="sim-type" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none">
+                        <option value="audio">URL Audio/Icecast (.mp3/.aac)</option>
+                        <option value="twitch">Twitch Username</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username / URL Sumber</label>
+                    <input type="text" id="sim-source" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none" placeholder="Cth: LofiGirl atau https://...">
+                </div>
+
+                <div class="pt-4 border-t border-gray-100 flex gap-3">
+                    <button type="button" onclick="closeAdminModal()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition">Batal</button>
+                    <button type="submit" class="flex-1 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-secondary transition shadow-lg shadow-primary/30">Kemaskini Server</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Set Current Year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // ----------------------------------------------------
+        // UI & ANIMATION LOGIC
+        // ----------------------------------------------------
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Sticky Navbar styling on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                nav.classList.add('py-0');
+                nav.classList.remove('py-2');
+            } else {
+                nav.classList.add('py-2');
+                nav.classList.remove('py-0');
+            }
+        });
+
+        // Intersection Observer for Scroll Animations
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // ----------------------------------------------------
+        // RADIO PLAYER INTEGRATION LOGIC (Requirement 4, 6 & 9)
+        // ----------------------------------------------------
+        const DB_KEY = 'eBilikAgama_RadioConfig';
+
+        // Default empty config
+        const defaultConfig = {
+            status: 'offline', // 'live' or 'offline'
+            type: 'audio', // 'audio' or 'twitch'
+            source: '' 
+        };
+
+        // Initialize Player on Load
+        function initRadioPlayer() {
+            showLoading(true);
+            
+            // Simulating API Fetch delay
+            setTimeout(() => {
+                // Get config from "Database" (localStorage for this demo)
+                const storedConfig = localStorage.getItem(DB_KEY);
+                const config = storedConfig ? JSON.parse(storedConfig) : defaultConfig;
+                
+                renderPlayer(config);
+                showLoading(false);
+            }, 800);
+        }
+
+        // Render the Player UI based on config
+        function renderPlayer(config) {
+            const badge = document.getElementById('radio-status-badge');
+            const title = document.getElementById('radio-title');
+            const subtitle = document.getElementById('radio-subtitle');
+            const container = document.getElementById('player-container');
+            const pulse = document.getElementById('live-pulse');
+
+            if (config.status === 'live' && config.source) {
+                // UI: Set to LIVE
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> <span class="text-red-600">LIVE NOW</span>`;
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-red-100 flex items-center gap-2 ring-1 ring-red-300";
+                title.textContent = "Sedang Bersiaran Langsung";
+                title.className = "text-2xl font-bold text-gray-800 mb-1 text-red-600";
+                subtitle.textContent = "Alami siaran radio rasmi eBilikAgama sekarang.";
+                pulse.classList.remove('hidden');
+
+                // Render specific player type
+                if (config.type === 'twitch') {
+                    container.innerHTML = `
+                        <iframe 
+                            src="https://player.twitch.tv/?channel=${config.source}&parent=${window.location.hostname || 'localhost'}&autoplay=true"
+                            height="100%" 
+                            width="100%" 
+                            class="rounded-lg shadow-sm w-full h-[200px] md:h-[300px]"
+                            frameborder="0" 
+                            scrolling="no" 
+                            allowfullscreen>
+                        </iframe>
+                    `;
+                } else {
+                    // Standard Audio Player (Icecast/Shoutcast/MP3)
+                    container.innerHTML = `
+                        <audio controls autoplay class="w-full h-14 outline-none">
+                            <source src="${config.source}" type="audio/mpeg">
+                            Penyemak imbas anda tidak menyokong elemen audio.
+                        </audio>
+                    `;
+                }
+            } else {
+                // UI: Set to OFFLINE
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-gray-400"></span> <span class="text-gray-600">OFFLINE</span>`;
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-gray-200 flex items-center gap-2";
+                title.textContent = "Siaran Dihentikan";
+                title.className = "text-2xl font-bold text-gray-800 mb-1";
+                subtitle.textContent = "Sila kembali semula mengikut jadual siaran.";
+                pulse.classList.add('hidden');
+                
+                container.innerHTML = `<p class="text-gray-500 text-sm italic py-4"><i class="fa-solid fa-moon mr-2"></i>Radio sedang offline buat masa ini.</p>`;
+            }
+        }
+
+        function showLoading(isLoading) {
+            const loading = document.getElementById('radio-loading');
+            if (isLoading) {
+                loading.classList.remove('hidden');
+                document.getElementById('radio-status-badge').classList.add('hidden');
+            } else {
+                loading.classList.add('hidden');
+                document.getElementById('radio-status-badge').classList.remove('hidden');
+            }
+        }
+
+        // Listen for changes from Admin Panel (Cross-tab sync / Real-time simulation)
+        window.addEventListener('storage', (e) => {
+            if (e.key === DB_KEY) {
+                initRadioPlayer(); // Auto update requirement
+            }
+        });
+
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', initRadioPlayer);
+
+        // ----------------------------------------------------
+        // ADMIN SIMULATION LOGIC (For demonstration purposes)
+        // ----------------------------------------------------
+        const modal = document.getElementById('admin-modal');
+        const modalContent = document.getElementById('admin-modal-content');
+
+        function openAdminModal() {
+            // Load current DB state into form
+            const storedConfig = localStorage.getItem(DB_KEY);
+            const config = storedConfig ? JSON.parse(storedConfig) : defaultConfig;
+            
+            document.getElementById('sim-status').value = config.status;
+            document.getElementById('sim-type').value = config.type;
+            document.getElementById('sim-source').value = config.source;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // Timeout for animation
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeAdminModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        document.getElementById('admin-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newConfig = {
+                status: document.getElementById('sim-status').value,
+                type: document.getElementById('sim-type').value,
+                source: document.getElementById('sim-source').value
+            };
+
+            // Save to "Database"
+            localStorage.setItem(DB_KEY, JSON.stringify(newConfig));
+            
+            // Dispatch event to trigger the update on the same page
+            window.dispatchEvent(new Event('storage'));
+            initRadioPlayer(); // Force update manually just in case
+            
+            closeAdminModal();
+            
+            // Scroll to radio to see the change
+            document.getElementById('radio-section').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
